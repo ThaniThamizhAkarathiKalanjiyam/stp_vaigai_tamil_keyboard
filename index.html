@@ -9,8 +9,17 @@
 This page demonstrates the widgets and theme you selected in Download Builder. Please make sure you are using them with a compatible jQuery version.
 <script src="external/jquery/jquery.js"></script>
 <script src="jquery-ui.js"></script>
-<script src="jquery-ui-tamil-typist-letters.json" type="application/json"></script>
 <script>
+
+$.getJSON( "jquery-ui-tamil-typist-letters.json", function( data ) {
+  var items = [];
+  $.each( data, function( key, val ) {
+    items.push( "<li id='" + key + "'>" + val + "</li>" );
+  });
+ 
+console.log(items);
+
+});
 
 $( "#accordion" ).accordion();
 
