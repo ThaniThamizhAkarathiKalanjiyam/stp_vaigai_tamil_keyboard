@@ -7,9 +7,14 @@
 </head>
 <body>
 This page demonstrates the widgets and theme you selected in Download Builder. Please make sure you are using them with a compatible jQuery version.
+<br />
+<input type='text' id="autocomplete" />
+
 <script src="external/jquery/jquery.js"></script>
 <script src="jquery-ui.js"></script>
 <script>
+
+$(document).ready(function(){
 
 $.getJSON( "jquery-ui-tamil-typist-letters.json", function( data ) {
   var items = [];
@@ -49,6 +54,8 @@ var availableTags = [
 ];
 $( "#autocomplete" ).autocomplete({
 	source: availableTags
+});
+
 });
 
 </script>
