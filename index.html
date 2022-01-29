@@ -9,9 +9,13 @@
 This page demonstrates the widgets and theme you selected in Download Builder. Please make sure you are using them with a compatible jQuery version.
 <br />
 <input type='text' id="autocomplete" />
+<br />
+<input type='text' id="tam_autocomplete" />
 
 <script src="external/jquery/jquery.js"></script>
 <script src="jquery-ui.js"></script>
+<script src="jquery.ui.autocomplete.scroll.js"></script>
+
 <script>
 
 $(document).ready(function(){
@@ -23,6 +27,11 @@ $.getJSON( "jquery-ui-tamil-typist-letters.json", function( data ) {
   });
  
 console.log(items);
+
+});
+var tam_transliterate = []
+$.getJSON( "data//tam_transliterate.json", function( data ) {
+	tam_transliterate = data;
 
 });
 
@@ -55,6 +64,91 @@ var availableTags = [
 $( "#autocomplete" ).autocomplete({
 	source: availableTags
 });
+
+
+//----------------------
+$("#tam_autocomplete").autocomplete({
+    autoFocus: true,
+    source: function (request, response) {
+	
+        $.ajax({
+            //url: "data/"+request.term+".json",
+			url: "data/a.json",
+            type: 'get',
+            dataType: 'json',
+            data: {},
+            success: function (data) {
+
+			
+                var autocompleteOptions = []
+                //autocompleteOptions.push(
+                //    {
+                //        "label": "All Items",
+                //        "value": " "
+                //    })
+				var tam_word  = request.term;
+
+                $.each(tam_transliterate, function (key, val) {
+
+						var eng = (val.eng)
+                        var tam = (val.tam)
+						
+						tam_word = tam_word.replace(eng,tam)
+						
+                       
+                })
+				
+				 autocompleteOptions.push({
+                            "label": tam_word,
+                            "value": tam_word
+                        })
+				 autocompleteOptions.concat(data)
+				
+                response(autocompleteOptions);
+            }
+        });
+    },
+    minLength: 0,
+	maxShowItems: 5,//Add jquery.ui.autocomplete.scroll.js
+    //select: function (event, ui) {
+    //    //log("Selected: " + ui.item.value + " aka " + ui.item.id);
+    //},
+    select: function (event, ui) {
+        //var cust_noLoc = convertToString($("#tam_autocomplete").val())
+        //$('#SalesShipsContainer').jtable('load', {
+        //    "vendor_no": "",
+        //    "item_no": ui.item.value,
+        //    "cust_no": cust_noLoc
+        //});
+    },
+    change: function (event, ui) {
+        // $('#SalesShipsContainer').jtable('load');
+        //$("#txtmin_qty").val(ui.item.min_value);
+    },
+	 <!-- create: function (event, ui) { -->
+                            <!-- var target_id = event.target.id -->
+                            <!-- var target_parent = $("#" + target_id).parent() -->
+                            <!-- target_parent.css("position", "relative") -->
+
+                            <!-- var image_downarrow = $("<i>") -->
+                            <!-- image_downarrow.addClass("fa fa-arrow-circle-o-down status-icon") -->
+                            <!-- image_downarrow.attr("id", target_id +'_fa') -->
+                            <!-- image_downarrow.css("position", 'absolute') -->
+                            <!-- image_downarrow.css("top", '0px') -->
+                            <!-- image_downarrow.css("right", '-1px') -->
+                            <!-- image_downarrow.click(function () { -->
+                                <!-- $("#" + target_id).autocomplete("search","") -->
+                            <!-- }) -->
+
+                            <!-- //target_parent.append('<i class="fa fa-check-circle-o status-icon" id="' + target_id +'_fa"></i>') -->
+                            <!-- target_parent.append(image_downarrow) -->
+                            <!-- console.log("target_parent", image_downarrow) -->
+                        <!-- } -->
+})
+
+$("#btntam_autocomplete").click(function () {
+        $("#tam_autocomplete").autocomplete("search", "");
+    })
 
 });
 
